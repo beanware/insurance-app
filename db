@@ -28,11 +28,15 @@ CREATE TABLE Policies (
     plan_id INT NOT NULL,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
-    extra_field1 VARCHAR(255), -- Can store vehicle model, health condition, or property value based on plan type
-    extra_field2 VARCHAR(255), -- Can store registration number or be left NULL for health/home
-    FOREIGN KEY (user_id) REFERENCES Users(user_id), -- Assuming there is a Users table
+    vehicle_model VARCHAR(255),
+    registration_number VARCHAR(255),
+    health_condition VARCHAR(255),
+    property_value DECIMAL(15, 2),
+    -- Add any additional fields for other plan types
+    FOREIGN KEY (user_id) REFERENCES Users(user_id),
     FOREIGN KEY (plan_id) REFERENCES InsurancePlans(plan_id)
 );
+
 
 
 CREATE TABLE Claims (

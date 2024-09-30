@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error_msg = "Password must be at least 6 characters long.";
     } else {
         // Check for duplicate email or username
-        $stmt = $conn->prepare("SELECT id FROM Users WHERE email = ? OR username = ?");
+        $stmt = $conn->prepare("SELECT user_id FROM Users WHERE email = ? OR username = ?");
         if ($stmt) {
             $stmt->bind_param("ss", $email, $username);
             $stmt->execute();
@@ -101,7 +101,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            /* Removed height and overflow properties */
             min-height: 100vh; /* Ensures the body takes at least the full viewport height */
         }
         .form-container {

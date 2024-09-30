@@ -23,6 +23,12 @@ $loggedIn = isset($_SESSION['user_id']);  // Check if user is logged in (assumin
             background-color: #f9f9f9;
             color: #333;
             line-height: 1.6;
+    background-image: url('https://images.unsplash.com/photo-1580894908361-0b2f5728e3b0?w=1200&auto=format&fit=crop&q=80');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh; /* Ensures the body takes at least the full viewport height */
+    background-color: #f8f9fa; /* Fallback background color */
         }
 
         a {
@@ -258,6 +264,36 @@ $loggedIn = isset($_SESSION['user_id']);  // Check if user is logged in (assumin
             color: #0056b3;
         }
 
+        /* Custom Button Styling */
+.btn-success {
+    background-color: #0056b3;
+            color: #f0f0f0;
+            padding: 12px 24px;
+            margin: 2rem;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-success:hover {
+    background-color: #f0f0f0;
+            color: #0056b3;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+
+}
+
+/* Optional: Customizing the Card Title */
+.card-title {
+    color: #0056b3;
+}
+
+/* Ensuring Images Cover the Card Top */
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+
         /* Responsive Adjustments */
         @media (max-width: 768px) {
             .header h1 {
@@ -291,7 +327,7 @@ $loggedIn = isset($_SESSION['user_id']);  // Check if user is logged in (assumin
             <div class="nav-links">
                 <?php if ($loggedIn): ?>
                     <a href="my_plans.php" class="button">View My Plans</a>
-                    <a href="admin_dashboard.php" class="button">Claims</a>
+                    <a href="add_claim.php" class="button">Claims</a>
                     <a href="logout.php" class="button">Logout</a>
                 <?php else: ?>
                     <a href="user_login.php" class="button">Login</a>
@@ -329,10 +365,6 @@ $loggedIn = isset($_SESSION['user_id']);  // Check if user is logged in (assumin
                         <li>Network of Hospitals: Access to top healthcare providers.</li>
                         <li>24/7 Customer Support: Assistance whenever you need it.</li>
                     </ul>
-                    <!-- Prevent sign-up if not logged in -->
-                    <a href="<?php echo $loggedIn ? 'policy_creation.php?plan=health' : 'user_login.php'; ?>" class="button">
-                        Sign Up for Health Plan
-                    </a>
                 </div>
             </div>
 
@@ -352,10 +384,6 @@ $loggedIn = isset($_SESSION['user_id']);  // Check if user is logged in (assumin
                         <li>Roadside Assistance: 24/7 support for emergencies.</li>
                         <li>Flexible Payment Options: Choose a plan that fits your budget.</li>
                     </ul>
-                    <!-- Prevent sign-up if not logged in -->
-                    <a href="<?php echo $loggedIn ? 'policy_creation.php?plan=motor' : 'user_login.php'; ?>" class="button">
-                        Sign Up for Motor Plan
-                    </a>
                 </div>
             </div>
 
@@ -375,10 +403,6 @@ $loggedIn = isset($_SESSION['user_id']);  // Check if user is logged in (assumin
                         <li>Liability Protection: Safeguard against accidents occurring on your property.</li>
                         <li>Personal Belongings Coverage: Protects your valuables inside the home.</li>
                     </ul>
-                    <!-- Prevent sign-up if not logged in -->
-                    <a href="<?php echo $loggedIn ? 'policy_creation.php?plan=home' : 'user_login.php'; ?>" class="button">
-                        Sign Up for Home Plan
-                    </a>
                 </div>
             </div>
 
@@ -398,14 +422,20 @@ $loggedIn = isset($_SESSION['user_id']);  // Check if user is logged in (assumin
                         <li>Flexible Terms: Customize your coverage according to your needs.</li>
                         <li>Investment Opportunities: Build savings alongside your insurance coverage.</li>
                     </ul>
-                    <!-- Prevent sign-up if not logged in -->
-                    <a href="<?php echo $loggedIn ? 'policy_creation.php?plan=life' : 'user_login.php'; ?>" class="button">
-                        Sign Up for Life Plan
-                    </a>
                 </div>
             </div>
         </div>
+        <br>
+        <center>
+        <div class="text-center mt-5">
+        <a href="<?php echo $loggedIn ? 'policy_creation.php?plan=life' : 'user_login.php'; ?>" class="btn btn-success btn-lg">
+            Sign Up for Insure
+        </a>
+    </div>
+                </center>
     </section>
+
+           
 
     <!-- Advertisement Section -->
     <section class="advertisement container">
