@@ -51,8 +51,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($stmt->num_rows > 0) {
                 $error_msg = "A user with this email or username already exists.";
             } else {
-                $stmt->close();
-
                 // Hash the password using BCRYPT
                 $password_hash = password_hash($password, PASSWORD_BCRYPT);
 
@@ -77,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             }
 
-            $stmt->close();
+            $stmt->close(); // Close the statement once
         } else {
             $error_msg = "Prepare failed: " . htmlspecialchars($conn->error);
         }
@@ -90,12 +88,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- [Your existing HTML head content remains unchanged] -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Registration | Insurance Company</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        /* [Your existing CSS styles remain unchanged] */
         body {
             background-image: url('https://images.unsplash.com/photo-1580894908361-0b2f5728e3b0?w=1200&auto=format&fit=crop&q=80');
             background-size: cover;

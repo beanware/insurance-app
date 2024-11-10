@@ -40,6 +40,10 @@ if ($stmt_policies) {
     $error_msg = "Error fetching policies: " . htmlspecialchars($conn->error);
 }
 
+// Claim date validation rule
+$current_date = date("Y-m-d");
+$seven_days_ago = date("Y-m-d", strtotime("-7 days"));
+
 // Handle Claim Submission
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_claim'])) {
     // Retrieve and sanitize form inputs
@@ -49,11 +53,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_claim'])) {
     $claim_amount = floatval($_POST['claim_amount']);
     $claim_date = $_POST['claim_date'];
 
-    // Validate inputs
-    if (empty($policy_id) || empty($claim_type) || empty($claim_description) || empty($claim_amount) || empty($claim_date)) {
+    // Validate claim date
+    if ($claim_date > $current_date) {
+        $error_msg = "Claim date cannot be in the future.";
+    } elseif ($claim_date < $seven_days_ago) {
+        $error_msg = "Claim date cannot be more than 7 days old.";
+    } elseif (empty($policy_id) || empty($claim_type) || empty($claim_description) || empty($claim_amount) || empty($claim_date)) {
         $error_msg = "All fields are required.";
     } else {
-        // Ensure the selected policy belongs to the user
+        // Existing validation for policy ownership
         $stmt_verify = $conn->prepare("SELECT policy_id FROM Policies WHERE policy_id = ? AND user_id = ?");
         if ($stmt_verify) {
             $stmt_verify->bind_param("ii", $policy_id, $_SESSION['user_id']);
@@ -84,6 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_claim'])) {
         }
     }
 }
+
 
 // Close the connection at the end
 $conn->close();
@@ -138,6 +147,11 @@ $conn->close();
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php endif; ?>
+    <!-- Date restriction alert -->
+<div class="alert alert-info text-center" role="alert">
+    Please ensure your claim date is not in the future and not more than 7 days in the past.
+</div>
+
 
     <!-- Claim Submission Form -->
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">

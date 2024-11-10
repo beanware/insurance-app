@@ -116,37 +116,32 @@ $conn->close();
                 // Re-establish database connection to fetch plan details
                 $conn = new mysqli($servername, $username_db, $password_db, $dbname);
                 if ($conn->connect_error) {
-                    echo "<tr><td colspan='6' class='text-center text-danger'>Database connection error.</td></tr>";
+                    echo "<tr><td colspan='5' class='text-center text-danger'>Database connection error.</td></tr>";
                 } else {
                     foreach ($policies as $policy) {
                         // Fetch plan details
-                        $stmt_p = $conn->prepare("SELECT plan_name, plan_type FROM InsurancePlans WHERE plan_id = ?");
+                        $stmt_p = $conn->prepare("SELECT plan_name, tier, coverage_amount, premium, deductible, coverage_description FROM InsurancePlans WHERE plan_id = ?");
                         if ($stmt_p) {
                             $stmt_p->bind_param("i", $policy['plan_id']);
                             $stmt_p->execute();
-                            $stmt_p->bind_result($plan_name, $plan_type);
+                            $stmt_p->bind_result($plan_name, $tier, $coverage_amount, $premium, $deductible, $coverage_description);
                             $stmt_p->fetch();
                             $stmt_p->close();
                         } else {
                             $plan_name = "N/A";
-                            $plan_type = "N/A";
+                            $tier = "N/A";
+                            $coverage_amount = "N/A";
+                            $premium = "N/A";
+                            $deductible = "N/A";
+                            $coverage_description = "N/A";
                         }
 
-                        // Prepare details based on plan_type
-                        $details = "";
-                        switch ($plan_type) {
-                            case 'motor':
-                                $details = "Vehicle Model: " . htmlspecialchars($policy['vehicle_model']) . "<br>Registration Number: " . htmlspecialchars($policy['registration_number']);
-                                break;
-                            case 'health':
-                                $details = "Health Condition: " . htmlspecialchars($policy['health_condition']);
-                                break;
-                            case 'home':
-                                $details = "Property Value: KES " . number_format($policy['property_value'], 2);
-                                break;
-                            default:
-                                $details = "Details not available.";
-                        }
+                        // Prepare details based on the new structure
+                        $details = "Tier: " . htmlspecialchars($tier) . "<br>"
+                                 . "Coverage Amount: KES " . number_format($coverage_amount, 2) . "<br>"
+                                 . "Premium: KES " . number_format($premium, 2) . "<br>"
+                                 . "Deductible: KES " . number_format($deductible, 2) . "<br>"
+                                 . "Description: " . htmlspecialchars($coverage_description);
 
                         echo "<tr>
                                 <td>" . htmlspecialchars($policy['policy_id']) . "</td>
@@ -154,7 +149,6 @@ $conn->close();
                                 <td>" . htmlspecialchars($policy['start_date']) . "</td>
                                 <td>" . htmlspecialchars($policy['end_date']) . "</td>
                                 <td>" . $details . "</td>
-                                
                               </tr>";
                     }
                     $conn->close();

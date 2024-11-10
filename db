@@ -11,14 +11,16 @@ CREATE TABLE Users (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-
+-- Modified InsurancePlans Table
 CREATE TABLE InsurancePlans (
     plan_id INT AUTO_INCREMENT PRIMARY KEY,
     plan_name VARCHAR(255) NOT NULL,
-    plan_type ENUM('motor', 'health', 'home') NOT NULL,
+    plan_type ENUM('phone') NOT NULL,  
+    tier ENUM('tier1', 'tier2', 'premium') NOT NULL, 
     coverage_amount DECIMAL(10, 2),
-    premium_amount DECIMAL(10, 2),
-    deductible_amount DECIMAL(10, 2)
+    premium DECIMAL(10, 2),
+    deductible DECIMAL(10, 2),
+    coverage_description TEXT
 );
 
 
@@ -28,11 +30,8 @@ CREATE TABLE Policies (
     plan_id INT NOT NULL,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
-    vehicle_model VARCHAR(255),
-    registration_number VARCHAR(255),
-    health_condition VARCHAR(255),
-    property_value DECIMAL(15, 2),
-    -- Add any additional fields for other plan types
+    phone_model VARCHAR(255), 
+    serial_number VARCHAR(255),  
     FOREIGN KEY (user_id) REFERENCES Users(user_id),
     FOREIGN KEY (plan_id) REFERENCES InsurancePlans(plan_id)
 );
